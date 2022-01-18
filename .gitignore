@@ -6,3 +6,5 @@ node_modules/
 coverage/
 
 dist/
+
+cucumber_report.html
