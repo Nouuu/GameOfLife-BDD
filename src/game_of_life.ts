@@ -1,18 +1,18 @@
-interface ArrayDimensions {
+export interface ArrayDimensions {
     width: number;
     height: number;
 }
 
-interface Coordinate {
+export interface Coordinate {
     x: number;
     y: number;
 }
 
-type CellArray = number[][];
+export type CellArray = number[][];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function init() {
+export function init() {
     const dimensions: ArrayDimensions = { height: 25, width: 50 };
     let array = initRandomCellArray(dimensions);
     showArray(array, dimensions);
@@ -20,7 +20,7 @@ function init() {
     showArray(array, dimensions);
 }
 
-function showArray(array: CellArray, arrayDimensions: ArrayDimensions) {
+export function showArray(array: CellArray, arrayDimensions: ArrayDimensions) {
     for (let i = 0; i < arrayDimensions.height; i++) {
         for (let j = 0; j < arrayDimensions.width; j++) {
             if (array[i][j] === 1) {
@@ -30,7 +30,7 @@ function showArray(array: CellArray, arrayDimensions: ArrayDimensions) {
     }
 }
 
-function initRandomCellArray(arrayDimensions: ArrayDimensions): CellArray {
+export function initRandomCellArray(arrayDimensions: ArrayDimensions): CellArray {
     const array: CellArray = [];
     for (let i = 0; i < arrayDimensions.height; i++) {
         array[i] = [];
@@ -41,7 +41,7 @@ function initRandomCellArray(arrayDimensions: ArrayDimensions): CellArray {
     return array;
 }
 
-function getNeighboursCoordinates(
+export function getNeighboursCoordinates(
     x: number,
     y: number,
     arrayDimensions: ArrayDimensions
@@ -98,8 +98,8 @@ function getNeighboursCoordinates(
     return coordinates;
 }
 
-function nextStep(array: CellArray, arrayDimensions: ArrayDimensions): CellArray {
-    const nextArray: CellArray = [];
+export function nextStep(array: CellArray, arrayDimensions: ArrayDimensions): CellArray {
+    const nextArray: CellArray = array.map((line) => line.slice());
 
     for (let y = 0; y < arrayDimensions.height; y++) {
         for (let x = 0; x < arrayDimensions.width; x++) {
@@ -120,5 +120,3 @@ function nextStep(array: CellArray, arrayDimensions: ArrayDimensions): CellArray
     }
     return nextArray;
 }
-
-init();
