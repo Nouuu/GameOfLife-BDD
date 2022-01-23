@@ -2,17 +2,17 @@ import { DataTable, Given, Then, When } from '@cucumber/cucumber';
 import { ArrayDimensions, Board, Cell, CellArray } from '../../src/game_of_life';
 import { expect } from 'chai';
 
-function transformRawArrayToArrayCell(string: string[][]): CellArray {
-    const cellArray: CellArray = [];
-    string.forEach((line) => {
+function transformRawArrayToBoard(string: string[][]): Board {
+    const board = new Board(string.length, string[0].length);
+    string.forEach((line, i) => {
         const cellLine: Cell[] = [];
-        line.forEach((cell) => {
-            cellLine.push(cell.indexOf('x') >= 0 ? 1 : 0);
+        line.forEach((cell, j) => {
+            board.cells[i].push(new Cell({ x: i, y: j }, Boolean(cell.indexOf('x') >= 0)));
         });
-        cellArray.push(cellLine);
+        board.cells.push(cellLine);
     });
 
-    return cellArray;
+    return board;
 }
 
 function getDimensionsFromRawArray(string: string[][]): ArrayDimensions {
@@ -26,7 +26,7 @@ let board: Board;
 let arrayDimensions: ArrayDimensions;
 
 Given(/the following setup$/, (setup: DataTable) => {
-    board = transformRawArrayToArrayCell(setup.raw());
+    board = transformRawArrayToBoard(setup.raw());
     arrayDimensions = getDimensionsFromRawArray(setup.raw());
 });
 
@@ -37,13 +37,13 @@ When('I evolve the board', () => {
 });
 
 Then(/the center cell should be (dead|alive)/, (status: string) => {
-    const line: number[] = board[Math.floor(board.length / 2)];
+    const line: number[] = board[Math.floor(board.cells.length / 2)];
     const cell: number = line[Math.floor(line.length / 2)];
     expect(cell).eq(status === 'alive' ? 1 : 0);
 });
 
 Then(/I should see the following board$/, (board: DataTable) => {
-    const expectedCellArray = transformRawArrayToArrayCell(board.raw());
+    const expectedCellArray = transformRawArrayToBoard(board.raw());
     const expectedArrayDimensions = getDimensionsFromRawArray(board.raw());
 
     expect(arrayDimensions.height).eq(expectedArrayDimensions.height);
