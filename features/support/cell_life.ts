@@ -1,5 +1,5 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber';
-import { ArrayDimensions, Board, Cell, CellArray } from '../../src/game_of_life';
+import { ArrayDimensions, Board, Cell } from '../../src/game_of_life';
 import { expect } from 'chai';
 
 function transformRawArrayToBoard(string: string[][]): Board {
@@ -42,14 +42,14 @@ Then(/the center cell should be (dead|alive)/, (status: string) => {
     expect(cell).eq(status === 'alive' ? 1 : 0);
 });
 
-Then(/I should see the following board$/, (board: DataTable) => {
-    const expectedCellArray = transformRawArrayToBoard(board.raw());
-    const expectedArrayDimensions = getDimensionsFromRawArray(board.raw());
+Then(/I should see the following board$/, (boardTable: DataTable) => {
+    const expectedCellArray = transformRawArrayToBoard(boardTable.raw());
+    const expectedArrayDimensions = getDimensionsFromRawArray(boardTable.raw());
 
     expect(arrayDimensions.height).eq(expectedArrayDimensions.height);
     expect(arrayDimensions.width).eq(expectedArrayDimensions.width);
 
-    board.forEach((line, y) =>
+    board.cells.forEach((line, y) =>
         line.forEach((cell, x) => {
             expect(cell).eq(expectedCellArray[y][x]);
         })
