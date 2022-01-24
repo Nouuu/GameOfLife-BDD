@@ -5,11 +5,9 @@ import { expect } from 'chai';
 function transformRawArrayToBoard(dimension: ArrayDimensions, string: string[][]): Board {
     const board = new Board(dimension.height, dimension.width);
     string.forEach((line, i) => {
-        const cellLine: Cell[] = [];
         line.forEach((cell, j) => {
             board.cells[i].push(new Cell({ x: i, y: j }, Boolean(cell.indexOf('x') >= 0)));
         });
-        board.cells.push(cellLine);
     });
 
     return board;
