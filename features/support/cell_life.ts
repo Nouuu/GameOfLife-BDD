@@ -2,8 +2,8 @@ import { DataTable, Given, Then, When } from '@cucumber/cucumber';
 import { ArrayDimensions, Board, Cell } from '../../src/game_of_life';
 import { expect } from 'chai';
 
-function transformRawArrayToBoard(string: string[][]): Board {
-    const board = new Board(string.length, string[0].length);
+function transformRawArrayToBoard(dimension: ArrayDimensions, string: string[][]): Board {
+    const board = new Board(dimension.height, dimension.width);
     string.forEach((line, i) => {
         const cellLine: Cell[] = [];
         line.forEach((cell, j) => {
@@ -26,8 +26,8 @@ let board: Board;
 let arrayDimensions: ArrayDimensions;
 
 Given(/the following setup$/, (setup: DataTable) => {
-    board = transformRawArrayToBoard(setup.raw());
     arrayDimensions = getDimensionsFromRawArray(setup.raw());
+    board = transformRawArrayToBoard(arrayDimensions, setup.raw());
 });
 
 When('I evolve the board', () => {
@@ -43,8 +43,8 @@ Then(/the center cell should be (dead|alive)/, (status: string) => {
 });
 
 Then(/I should see the following board$/, (boardTable: DataTable) => {
-    const expectedCellArray = transformRawArrayToBoard(boardTable.raw());
     const expectedArrayDimensions = getDimensionsFromRawArray(boardTable.raw());
+    const expectedCellArray = transformRawArrayToBoard(expectedArrayDimensions, boardTable.raw());
 
     expect(arrayDimensions.height).eq(expectedArrayDimensions.height);
     expect(arrayDimensions.width).eq(expectedArrayDimensions.width);
