@@ -123,6 +123,14 @@ export class Board {
     }
 }
 
+export function init() {
+    const board = new Board(25, 25);
+    board.cells = initRandomCellArray(board.dimensions);
+    board.display();
+    board.nextStep();
+    board.display();
+}
+
 export function initRandomCellArray(arrayDimensions: ArrayDimensions): CellArray {
     const randomFactor = 11;
     const board: CellArray = [];
