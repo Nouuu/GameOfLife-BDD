@@ -35,9 +35,9 @@ When('I evolve the board', () => {
 });
 
 Then(/the center cell should be (dead|alive)/, (status: string) => {
-    const line: number[] = board[Math.floor(board.cells.length / 2)];
-    const cell: number = line[Math.floor(line.length / 2)];
-    expect(cell).eq(status === 'alive' ? 1 : 0);
+    const line: Cell[] = board.cells[Math.floor(board.cells.length / 2)];
+    const cell: Cell = line[Math.floor(line.length / 2)];
+    expect(cell.isAlive).eq(status === 'alive');
 });
 
 Then(/I should see the following board$/, (boardTable: DataTable) => {
