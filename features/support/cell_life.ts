@@ -26,12 +26,13 @@ let arrayDimensions: ArrayDimensions;
 Given(/the following setup$/, (setup: DataTable) => {
     arrayDimensions = getDimensionsFromRawArray(setup.raw());
     board = transformRawArrayToBoard(arrayDimensions, setup.raw());
+    // console.log(board.toString());
 });
 
 When('I evolve the board', () => {
-    console.log(board);
+    // console.log(board.toString());
     board.nextStep();
-    console.log(board);
+    // console.log(board.toString());
 });
 
 Then(/the center cell should be (dead|alive)/, (status: string) => {
