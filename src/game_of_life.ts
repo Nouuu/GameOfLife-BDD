@@ -124,6 +124,18 @@ export class Board {
         }
         this.cells = nextBoard;
     }
+
+    toString(): string {
+        let boardString = '';
+        for (let y = 0; y < this.dimensions.height; y++) {
+            let boardLineString = '|';
+            for (let x = 0; x < this.dimensions.width; x++) {
+                boardLineString += ` ${this.isAlive(x, y) ? 'x' : '.'} |`;
+            }
+            boardString += boardLineString + '\n';
+        }
+        return boardString;
+    }
 }
 
 export function init() {
