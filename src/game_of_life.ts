@@ -13,10 +13,12 @@ export type CellArray = Cell[][];
 export class Cell {
     private position: Coordinate;
     isAlive: boolean;
+
     constructor(position: Coordinate, isAlive: boolean) {
         this.position = position;
         this.isAlive = isAlive;
     }
+
     getNeighboursCoordinates(arrayDimensions: ArrayDimensions): Coordinate[] {
         const coordinates: Coordinate[] = [];
         if (this.position.x > 0 && this.position.y > 0) {
@@ -77,12 +79,13 @@ export class Cell {
 export class Board {
     cells: CellArray;
     dimensions: ArrayDimensions;
+
     constructor(height: number, width: number) {
         this.dimensions = { height, width };
         this.cells = initRandomCellArray(this.dimensions);
-        this.display();
-        this.nextStep();
-        this.display();
+        // this.display();
+        // this.nextStep();
+        // this.display();
     }
 
     display() {
