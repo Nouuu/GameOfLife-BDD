@@ -99,7 +99,7 @@ export class Board {
     }
 
     isAlive(x: number, y: number): boolean {
-        return this.cells[x][y].isAlive;
+        return this.cells[y][x].isAlive;
     }
 
     nextStep() {
@@ -108,7 +108,7 @@ export class Board {
         for (let y = 0; y < this.dimensions.height; y++) {
             for (let x = 0; x < this.dimensions.width; x++) {
                 let aliveNeighbours = 0;
-                const neighbours = this.cells[x][y].getNeighboursCoordinates(this.dimensions);
+                const neighbours = this.cells[y][x].getNeighboursCoordinates(this.dimensions);
 
                 neighbours.forEach((neighbour) => {
                     if (this.isAlive(neighbour.x, neighbour.y)) {
