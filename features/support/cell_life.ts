@@ -49,7 +49,7 @@ Then(/I should see the following board$/, (boardTable: DataTable) => {
 
     board.cells.forEach((line, y) =>
         line.forEach((cell, x) => {
-            expect(cell).eq(expectedCellArray[y][x]);
+            expect(cell.isAlive).eq(expectedCellArray.cells[y][x].isAlive);
         })
     );
 });
