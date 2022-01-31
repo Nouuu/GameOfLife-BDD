@@ -1,18 +1,16 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber';
-import { ArrayDimensions, CellArray, nextStep } from '../../src/game_of_life';
+import { ArrayDimensions, Board, Cell } from '../../src/game_of_life';
 import { expect } from 'chai';
 
-function transformRawArrayToArrayCell(string: string[][]): CellArray {
-    const cellArray: CellArray = [];
-    string.forEach((line) => {
-        const cellLine: number[] = [];
-        line.forEach((cell) => {
-            cellLine.push(cell.indexOf('x') >= 0 ? 1 : 0);
+function transformRawArrayToBoard(dimension: ArrayDimensions, string: string[][]): Board {
+    const board = new Board(dimension.height, dimension.width);
+    string.forEach((line, i) => {
+        line.forEach((cell, j) => {
+            board.cells[i][j] = new Cell({ x: j, y: i }, Boolean(cell.indexOf('x') >= 0));
         });
-        cellArray.push(cellLine);
     });
 
-    return cellArray;
+    return board;
 }
 
 function getDimensionsFromRawArray(string: string[][]): ArrayDimensions {
@@ -22,36 +20,37 @@ function getDimensionsFromRawArray(string: string[][]): ArrayDimensions {
     };
 }
 
-let cellArray: CellArray;
+let board: Board;
 let arrayDimensions: ArrayDimensions;
 
 Given(/the following setup$/, (setup: DataTable) => {
-    cellArray = transformRawArrayToArrayCell(setup.raw());
     arrayDimensions = getDimensionsFromRawArray(setup.raw());
+    board = transformRawArrayToBoard(arrayDimensions, setup.raw());
+    // console.log(board.toString());
 });
 
 When('I evolve the board', () => {
-    console.log(cellArray);
-    cellArray = nextStep(cellArray, arrayDimensions);
-    console.log(cellArray);
+    // console.log(board.toString());
+    board.nextStep();
+    // console.log(board.toString());
 });
 
 Then(/the center cell should be (dead|alive)/, (status: string) => {
-    const line: number[] = cellArray[Math.floor(cellArray.length / 2)];
-    const cell: number = line[Math.floor(line.length / 2)];
-    expect(cell).eq(status === 'alive' ? 1 : 0);
+    const line: Cell[] = board.cells[Math.floor(board.cells.length / 2)];
+    const cell: Cell = line[Math.floor(line.length / 2)];
+    expect(cell.isAlive).eq(status === 'alive');
 });
 
-Then(/I should see the following board$/, (board: DataTable) => {
-    const expectedCellArray = transformRawArrayToArrayCell(board.raw());
-    const expectedArrayDimensions = getDimensionsFromRawArray(board.raw());
+Then(/I should see the following board$/, (boardTable: DataTable) => {
+    const expectedArrayDimensions = getDimensionsFromRawArray(boardTable.raw());
+    const expectedCellArray = transformRawArrayToBoard(expectedArrayDimensions, boardTable.raw());
 
     expect(arrayDimensions.height).eq(expectedArrayDimensions.height);
     expect(arrayDimensions.width).eq(expectedArrayDimensions.width);
 
-    cellArray.forEach((line, y) =>
+    board.cells.forEach((line, y) =>
         line.forEach((cell, x) => {
-            expect(cell).eq(expectedCellArray[y][x]);
+            expect(cell.isAlive).eq(expectedCellArray.cells[y][x].isAlive);
         })
     );
 });

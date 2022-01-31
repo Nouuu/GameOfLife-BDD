@@ -8,115 +8,155 @@ export interface Coordinate {
     y: number;
 }
 
-export type CellArray = number[][];
+export type CellArray = Cell[][];
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export class Cell {
+    private position: Coordinate;
+    isAlive: boolean;
 
-export function init() {
-    const dimensions: ArrayDimensions = { height: 25, width: 50 };
-    let array = initRandomCellArray(dimensions);
-    showArray(array, dimensions);
-    array = nextStep(array, dimensions);
-    showArray(array, dimensions);
+    constructor(position: Coordinate, isAlive: boolean) {
+        this.position = position;
+        this.isAlive = isAlive;
+    }
+
+    getNeighboursCoordinates(arrayDimensions: ArrayDimensions): Coordinate[] {
+        const coordinates: Coordinate[] = [];
+        if (this.position.x > 0 && this.position.y > 0) {
+            coordinates.push({
+                x: this.position.x - 1,
+                y: this.position.y - 1,
+            });
+        }
+        if (
+            this.position.y < arrayDimensions.height - 1 &&
+            this.position.x < arrayDimensions.width - 1
+        ) {
+            coordinates.push({
+                x: this.position.x + 1,
+                y: this.position.y + 1,
+            });
+        }
+        if (this.position.x > 0) {
+            coordinates.push({
+                x: this.position.x - 1,
+                y: this.position.y,
+            });
+            if (this.position.y < arrayDimensions.height - 1) {
+                coordinates.push({
+                    x: this.position.x - 1,
+                    y: this.position.y + 1,
+                });
+            }
+        }
+        if (this.position.y > 0) {
+            coordinates.push({
+                x: this.position.x,
+                y: this.position.y - 1,
+            });
+            if (this.position.x < arrayDimensions.width - 1) {
+                coordinates.push({
+                    x: this.position.x + 1,
+                    y: this.position.y - 1,
+                });
+            }
+        }
+        if (this.position.y < arrayDimensions.height - 1) {
+            coordinates.push({
+                x: this.position.x,
+                y: this.position.y + 1,
+            });
+        }
+        if (this.position.x < arrayDimensions.width - 1) {
+            coordinates.push({
+                x: this.position.x + 1,
+                y: this.position.y,
+            });
+        }
+        return coordinates;
+    }
 }
 
-export function showArray(array: CellArray, arrayDimensions: ArrayDimensions) {
-    for (let i = 0; i < arrayDimensions.height; i++) {
-        for (let j = 0; j < arrayDimensions.width; j++) {
-            if (array[i][j] === 1) {
-                // alive
+export class Board {
+    cells: CellArray;
+    dimensions: ArrayDimensions;
+
+    constructor(height: number, width: number) {
+        this.dimensions = { height, width };
+        this.cells = initRandomCellArray(this.dimensions);
+        // this.display();
+        // this.nextStep();
+        // this.display();
+    }
+
+    display() {
+        for (let i = 0; i < this.dimensions.height; i++) {
+            for (let j = 0; j < this.dimensions.width; j++) {
+                if (this.isAlive(i, j)) {
+                    // alive
+                }
             }
         }
     }
+
+    isAlive(x: number, y: number): boolean {
+        return this.cells[y][x].isAlive;
+    }
+
+    nextStep() {
+        const nextBoard: CellArray = this.cells.map((line) => line.slice());
+
+        for (let y = 0; y < this.dimensions.height; y++) {
+            for (let x = 0; x < this.dimensions.width; x++) {
+                let aliveNeighbours = 0;
+                const neighbours = this.cells[y][x].getNeighboursCoordinates(this.dimensions);
+
+                neighbours.forEach((neighbour) => {
+                    if (this.isAlive(neighbour.x, neighbour.y)) {
+                        aliveNeighbours++;
+                    }
+                });
+                if ((this.isAlive(x, y) && aliveNeighbours === 2) || aliveNeighbours === 3) {
+                    nextBoard[y][x] = new Cell({ y, x }, true);
+                } else {
+                    nextBoard[y][x] = new Cell({ y, x }, false);
+                }
+            }
+        }
+        this.cells = nextBoard;
+    }
+
+    toString(): string {
+        let boardString = '';
+        for (let y = 0; y < this.dimensions.height; y++) {
+            let boardLineString = '|';
+            for (let x = 0; x < this.dimensions.width; x++) {
+                boardLineString += ` ${this.isAlive(x, y) ? 'x' : '.'} |`;
+            }
+            boardString += boardLineString + '\n';
+        }
+        return boardString;
+    }
+}
+
+export function init() {
+    const board = new Board(25, 25);
+    board.cells = initRandomCellArray(board.dimensions);
+    board.display();
+    board.nextStep();
+    board.display();
 }
 
 export function initRandomCellArray(arrayDimensions: ArrayDimensions): CellArray {
-    const array: CellArray = [];
+    const randomFactor = 11;
+    const board: CellArray = [];
     for (let i = 0; i < arrayDimensions.height; i++) {
-        array[i] = [];
+        board[i] = [];
         for (let j = 0; j < arrayDimensions.width; j++) {
-            array[i][j] = Math.floor(Math.random() * 11) % 11;
+            board[i][j] = new Cell(
+                { x: i, y: j },
+                Boolean(Math.floor(Math.random() * randomFactor) % randomFactor)
+            );
         }
     }
-    return array;
-}
-
-export function getNeighboursCoordinates(
-    x: number,
-    y: number,
-    arrayDimensions: ArrayDimensions
-): Coordinate[] {
-    const coordinates: Coordinate[] = [];
-    if (x > 0 && y > 0) {
-        coordinates.push({
-            x: x - 1,
-            y: y - 1,
-        });
-    }
-    if (y < arrayDimensions.height - 1 && x < arrayDimensions.width - 1) {
-        coordinates.push({
-            x: x + 1,
-            y: y + 1,
-        });
-    }
-    if (x > 0) {
-        coordinates.push({
-            x: x - 1,
-            y: y,
-        });
-        if (y < arrayDimensions.height - 1) {
-            coordinates.push({
-                x: x - 1,
-                y: y + 1,
-            });
-        }
-    }
-    if (y > 0) {
-        coordinates.push({
-            x: x,
-            y: y - 1,
-        });
-        if (x < arrayDimensions.width - 1) {
-            coordinates.push({
-                x: x + 1,
-                y: y - 1,
-            });
-        }
-    }
-    if (y < arrayDimensions.height - 1) {
-        coordinates.push({
-            x: x,
-            y: y + 1,
-        });
-    }
-    if (x < arrayDimensions.width - 1) {
-        coordinates.push({
-            x: x + 1,
-            y: y,
-        });
-    }
-    return coordinates;
-}
-
-export function nextStep(array: CellArray, arrayDimensions: ArrayDimensions): CellArray {
-    const nextArray: CellArray = array.map((line) => line.slice());
-
-    for (let y = 0; y < arrayDimensions.height; y++) {
-        for (let x = 0; x < arrayDimensions.width; x++) {
-            let aliveNeighbours = 0;
-            const neighbours = getNeighboursCoordinates(x, y, arrayDimensions);
-
-            neighbours.forEach((neighbour) => {
-                if (array[neighbour.y][neighbour.x] === 1) {
-                    aliveNeighbours++;
-                }
-            });
-            if ((array[y][x] === 1 && aliveNeighbours === 2) || aliveNeighbours === 3) {
-                nextArray[y][x] = 1;
-            } else {
-                nextArray[y][x] = 0;
-            }
-        }
-    }
-    return nextArray;
+    return board;
 }
