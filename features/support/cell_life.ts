@@ -38,14 +38,14 @@ When('I evolve the board', () => {
     // console.log(board.toString());
 });
 
-When('i retrive the board as string', () => {
+When('I retrieve the board as string', () => {
     boardAsString = board.toString();
 });
 
-Then('i should get', (boardExpected: string) => {
-    console.log(boardAsString);
-    console.log(boardExpected);
-    console.log(boardAsString === boardExpected);
+Then('I should get', (boardExpected: string) => {
+    // console.log(boardAsString);
+    // console.log(boardExpected);
+    // console.log(boardAsString === boardExpected);
     expect(boardAsString).to.equal(boardExpected);
 });
 
