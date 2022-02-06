@@ -24,6 +24,7 @@ function getDimensionsFromRawArray(string: string[][]): ArrayDimensions {
 
 let board: Board;
 let arrayDimensions: ArrayDimensions;
+let boardAsString: string;
 
 Given(/the following setup$/, (setup: DataTable) => {
     arrayDimensions = getDimensionsFromRawArray(setup.raw());
@@ -35,6 +36,17 @@ When('I evolve the board', () => {
     // console.log(board.toString());
     board.nextStep();
     // console.log(board.toString());
+});
+
+When('i retrive the board as string', () => {
+    boardAsString = board.toString();
+});
+
+Then('i should get', (boardExpected: string) => {
+    console.log(boardAsString);
+    console.log(boardExpected);
+    console.log(boardAsString === boardExpected);
+    expect(boardAsString).to.equal(boardExpected);
 });
 
 Then(/the center cell should be (dead|alive)/, (status: string) => {
