@@ -6,9 +6,8 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc",
-    "test": "cucumber-js",
-    "lint": "eslint ./src --ext .ts",
-    "coverage": "nyc npm test"
+    "test": "nyc cucumber-js",
+    "lint": "eslint ./src --ext .ts"
   },
   "repository": {
     "type": "git",
