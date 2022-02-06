@@ -8,3 +8,5 @@ coverage/
 dist/
 
 cucumber_report.html
+
+.nyc_output/
