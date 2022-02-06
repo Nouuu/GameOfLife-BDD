@@ -23,9 +23,13 @@ export class Board {
         return new Board(height, width);
     }
 
-    public static initRandom(height: number, width: number): Board {
+    public static initRandom(
+        height: number,
+        width: number,
+        randomGenerator = initRandomCellArray
+    ): Board {
         const board = new Board(height, width);
-        board.cells = initRandomCellArray(board.dimensions);
+        board.cells = randomGenerator(board.dimensions);
         return board;
     }
 
