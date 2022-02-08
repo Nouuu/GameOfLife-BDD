@@ -36,7 +36,7 @@ You can run few commands to start/build this app :
 - `npm run build` : Compile the app and generate **dist** folder
 - `npm run build-dev` :  Compile the app and generate **dist** folder then run it ( build + start )
 - `npm run dev` : Directly run the TS source project
-- `npm run test` : Run cucumber tests. This generate two report :
+- `npm run test` : Run cucumber tests. This generate two reports :
   - One in coverage folder which show the test coverage
   - One in **cucumber_report.html** at the root of the project that show how cucumber tests results
 - `npm run lint` : Run `Eslint` on source code
