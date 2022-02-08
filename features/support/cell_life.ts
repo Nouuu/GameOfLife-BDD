@@ -5,7 +5,7 @@ import { Cell } from '../../src/game/Cell';
 import { Board } from '../../src/game/Board';
 
 function transformRawArrayToBoard(dimension: ArrayDimensions, string: string[][]): Board {
-    const board = Board.of(dimension.height, dimension.width);
+    const board = Board.init(dimension.height, dimension.width);
     string.forEach((line, i) => {
         line.forEach((cell, j) => {
             board.cells[i][j] = new Cell({ x: j, y: i }, Boolean(cell.indexOf('x') >= 0));

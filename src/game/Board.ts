@@ -19,7 +19,7 @@ export class Board {
         }
     }
 
-    public static of(height: number, width: number): Board {
+    public static init(height: number, width: number): Board {
         return new Board(height, width);
     }
 
@@ -42,15 +42,15 @@ export class Board {
 
         for (let y = 0; y < this.dimensions.height; y++) {
             for (let x = 0; x < this.dimensions.width; x++) {
-                let aliveNeighbours = 0;
-                const neighbours = this.cells[y][x].getNeighboursCoordinates(this.dimensions);
+                let aliveNeighbors = 0;
+                const neighbors = this.cells[y][x].getNeighborsCoordinates(this.dimensions);
 
-                neighbours.forEach((neighbour) => {
-                    if (this.isAlive(neighbour.x, neighbour.y)) {
-                        aliveNeighbours++;
+                neighbors.forEach((neighbor) => {
+                    if (this.isAlive(neighbor.x, neighbor.y)) {
+                        aliveNeighbors++;
                     }
                 });
-                if ((this.isAlive(x, y) && aliveNeighbours === 2) || aliveNeighbours === 3) {
+                if ((this.isAlive(x, y) && aliveNeighbors === 2) || aliveNeighbors === 3) {
                     nextBoard[y][x] = new Cell({ y, x }, true);
                 } else {
                     nextBoard[y][x] = new Cell({ y, x }, false);

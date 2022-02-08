@@ -11,10 +11,10 @@ process.argv.forEach((arg) => {
     const matchHeight = arg.match(heightRegex);
     const matchWidth = arg.match(widthRegex);
     if (matchHeight) {
-        height = parseInt(matchHeight[1]);
+        height ??= parseInt(matchHeight[1]);
     }
     if (matchWidth) {
-        width = parseInt(matchWidth[1]);
+        width ??= parseInt(matchWidth[1]);
     }
 });
 
