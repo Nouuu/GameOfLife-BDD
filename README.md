@@ -25,3 +25,9 @@ The universe of the Game of Life is an infinite two-dimensional orthogonal grid 
 The first generation is created randomly or with a predefined pattern. 
 
 By applying the above rules simultaneously to every cell in the seed—births and deaths occur simultaneously, and the discrete moment at which this happens is sometimes called a *tick*. The rules continue to be applied repeatedly to create further generations.
+
+## How to run
+
+## Classes
+
+## Tests & Coverage
