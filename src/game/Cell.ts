@@ -10,7 +10,7 @@ export class Cell {
         this.isAlive = isAlive;
     }
 
-    getNeighboursCoordinates(arrayDimensions: ArrayDimensions): Coordinate[] {
+    getNeighborsCoordinates(arrayDimensions: ArrayDimensions): Coordinate[] {
         const coordinates: Coordinate[] = [];
         if (this.position.x > 0 && this.position.y > 0) {
             coordinates.push({
