@@ -112,11 +112,9 @@ getNeighborsCoordinates(arrayDimensions: ArrayDimensions): Coordinate[] {
 }
 ```
 
-
-
 ### Board
 
-This class contains one of the most important function : `nextStep()` which compute the next state of our *Board* life :
+This class contains one of the most important function : `nextStep()` which compute the next state of our _Board_ life :
 
 ```typescript
 nextStep() {
@@ -125,14 +123,15 @@ nextStep() {
         for (let y = 0; y < this.dimensions.height; y++) {
             for (let x = 0; x < this.dimensions.width; x++) {
                 let aliveNeighbours = 0;
-                const neighbours = this.cells[y[x]                                              						.getNeighboursCoordinates(this.dimensions);
+                const neighbours = this.cells[y][x]
+                .getNeighboursCoordinates(this.dimensions);
 
                 neighbours.forEach((neighbour) => {
                     if (this.isAlive(neighbour.x, neighbour.y)) {
                         aliveNeighbours++;
                     }
                 });
-                if ((this.isAlive(x, y) && aliveNeighbours === 2) 
+                if ((this.isAlive(x, y) && aliveNeighbours === 2)
                     || aliveNeighbours === 3) {
                     nextBoard[y][x] = new Cell({ y, x }, true);
                 } else {
@@ -158,7 +157,7 @@ The first one is a code coverage on cucumber's tests. This file is viewable on *
 
 ### Cucumber report
 
-The other report is the result of the ran cucumber's tests : 
+The other report is the result of the ran cucumber's tests :
 
 ![image-20220208192621443](doc/README/image-20220208192621443.png)
 
